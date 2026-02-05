@@ -1,12 +1,5 @@
 """
-Solution: Intermediate Assignment 5 - Temperature Trend Analyzer
-
-This solution demonstrates:
-- Finding min/max values
-- Average calculations
-- Consecutive element detection
-- Daily change calculations
-- Trend determination
+Solution: Intermediate Assignment 5 - Temperature Trend Analyzer (Concise)
 """
 
 # Input data
@@ -66,14 +59,11 @@ else:
     print("  No heat waves detected")
 
 # Step 6: Calculate daily temperature changes
-print("\nDaily Temperature Changes:")
-significant_changes = []
-
+print("\nDaily Temperature Changes (>|2°C|):")
 for i in range(1, len(daily_temps)):
-    change = daily_temps[i] - daily_temps[i-1]
-    if abs(change) > 2:  # Significant change threshold
-        print("  Day {} → {}: {:.1f}°C".format(i, i+1, change))
-        significant_changes.append(change)
+    change = daily_temps[i] - daily_temps[i - 1]
+    if abs(change) > 2:
+        print("  Day {} → {}: {:.1f}°C".format(i, i + 1, change))
 
 # Step 7-8: Determine trend
 first_half_avg = sum(daily_temps[:len(daily_temps)//2]) / (len(daily_temps)//2)
@@ -91,9 +81,3 @@ print("\nTrend Analysis:")
 print("  First half avg: {:.1f}°C".format(first_half_avg))
 print("  Second half avg: {:.1f}°C".format(second_half_avg))
 print("  Overall: {}".format(trend))
-
-# Alternative approach
-print("\n--- Alternative Approach ---")
-print("All temps: {}".format(daily_temps))
-above_threshold = [(i+1, t) for i, t in enumerate(daily_temps) if t >= hot_threshold]
-print("Days above {}°C: {}".format(hot_threshold, [day for day, _ in above_threshold]))

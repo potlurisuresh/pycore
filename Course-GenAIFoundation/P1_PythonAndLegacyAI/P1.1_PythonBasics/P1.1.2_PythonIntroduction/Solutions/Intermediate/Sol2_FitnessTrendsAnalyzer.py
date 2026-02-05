@@ -1,12 +1,5 @@
 """
-Solution: Intermediate Assignment 2 - Fitness Trends Analyzer
-
-This solution demonstrates:
-- Nested list iteration
-- Calculating weekly statistics (totals, averages)
-- Counting conditions (days below goal)
-- Finding maximum in nested structure
-- Percentage calculations
+Solution: Intermediate Assignment 2 - Fitness Trends Analyzer (Concise)
 """
 
 # Input data
@@ -50,9 +43,3 @@ print("\nBest Week: {} (Total: {})".format(best_week['week'], best_week['total']
 consistency = (days_meeting_goal / total_days) * 100
 print("Consistency Score: {:.1f}%".format(consistency))
 
-# Alternative approach
-print("\n--- Using List Comprehension ---")
-weekly_totals = [sum(week) for week in weeks_data]
-print("Weekly totals: {}".format(weekly_totals))
-best_week_num = weekly_totals.index(max(weekly_totals)) + 1
-print("Best week: {}".format(best_week_num))

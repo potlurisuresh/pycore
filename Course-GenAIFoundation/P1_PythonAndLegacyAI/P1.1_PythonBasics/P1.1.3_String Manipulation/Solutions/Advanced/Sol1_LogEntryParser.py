@@ -1,10 +1,11 @@
 """
-Advanced Solution 1: Log Entry Parser
+Advanced Solution 1: Log Entry Parser (Concise)
 """
 import re
+from datetime import datetime
 
 # Input data
-log_database = """2026-02-03 09:15:22 INFO Application started
+log_stream = """2026-02-03 09:15:22 INFO Application started
 2026-02-03 09:16:45 ERROR Database connection timeout
 2026-02-03 09:17:10 INFO User:admin logged in from IP:192.168.1.100
 2026-02-03 09:18:33 ERROR Database connection timeout
@@ -12,102 +13,68 @@ log_database = """2026-02-03 09:15:22 INFO Application started
 2026-02-03 09:25:40 INFO Processing completed: 95% success
 2026-02-03 09:26:50 ERROR Database connection timeout"""
 
-# Parse log entries
-log_lines = log_database.strip().split("\n")
-
-# Initialize lists
-levels = []
-messages = []
-error_messages = []
-error_times = []
-
-# Process each log entry
-for log in log_lines:
-    parts = log.split()
-    time = parts[1]
+lines = [line.strip() for line in log_stream.strip().splitlines() if line.strip()]
+records = []
+for line in lines:
+    parts = line.split()
+    ts = " ".join(parts[:2])
     level = parts[2]
     message = " ".join(parts[3:])
-    
-    levels.append(level)
-    messages.append(message)
-    
-    if level == "ERROR":
-        error_messages.append(message)
-        error_times.append(time)
+    records.append((ts, level, message))
 
-# Count log levels
-info_count = levels.count("INFO")
-error_count = levels.count("ERROR")
+levels = [r[1] for r in records]
+messages = [r[2] for r in records]
+error_records = [(r[0], r[2]) for r in records if r[1] == "ERROR"]
 
-# Find repeated errors
-repeated_errors = []
-for error in error_messages:
-    count = error_messages.count(error)
-    if count > 1 and error not in repeated_errors:
-        repeated_errors.append(error)
+level_counts = {lvl: levels.count(lvl) for lvl in set(levels)}
+error_counts = {}
+for _, msg in error_records:
+    error_counts[msg] = error_counts.get(msg, 0) + 1
+repeated_errors = {msg: cnt for msg, cnt in error_counts.items() if cnt > 1}
 
-# Extract metadata using regex
 user_pattern = r"User:(\w+)"
 ip_pattern = r"IP:([\d.]+)"
 pct_pattern = r"(\d+)%"
 
-users = []
-ips = []
+users = [m.group(1) for msg in messages if (m := re.search(user_pattern, msg))]
+ips = [m.group(1) for msg in messages if (m := re.search(ip_pattern, msg))]
+percentages = [m.group(1) for msg in messages if (m := re.search(pct_pattern, msg))]
 
-for message in messages:
-    user_match = re.search(user_pattern, message)
-    if user_match:
-        users.append(user_match.group(1))
-    
-    ip_match = re.search(ip_pattern, message)
-    if ip_match:
-        ips.append(ip_match.group(1))
+error_times = [datetime.strptime(ts, "%Y-%m-%d %H:%M:%S") for ts, _ in error_records]
+burst_detected = False
+for i in range(len(error_times) - 2):
+    if (error_times[i + 2] - error_times[i]).total_seconds() <= 30:
+        burst_detected = True
+        break
 
-# Calculate time interval between first and last error
-if len(error_times) > 1:
-    time1_parts = error_times[0].split(":")
-    time2_parts = error_times[-1].split(":")
-    
-    min1 = int(time1_parts[0]) * 60 + int(time1_parts[1])
-    min2 = int(time2_parts[0]) * 60 + int(time2_parts[1])
-    
-    total_interval = min2 - min1
+print("Log Analysis Report")
+print("=" * 48)
+print(f"Total Entries: {len(records)}")
+print("By Level:", ", ".join(f"{k}={v}" for k, v in sorted(level_counts.items())))
 
-# Print report
-print("Comprehensive Log Analysis Report")
-print("=" * 50)
-print()
+if repeated_errors:
+    print("\nRepeated Errors:")
+    for msg, cnt in repeated_errors.items():
+        print(f"- {msg} ({cnt}x)")
 
-print("Summary Statistics:")
-print(f"Total Entries: {len(log_lines)}")
-print(f"INFO: {info_count} ({info_count * 100 // len(log_lines)}%)")
-print(f"ERROR: {error_count} ({error_count * 100 // len(log_lines)}%)")
-print()
+if error_records:
+    span_sec = int((error_times[-1] - error_times[0]).total_seconds()) if len(error_times) > 1 else 0
+    print("\nError Timeline:")
+    for ts, msg in error_records:
+        print(f"- {ts} | {msg}")
+    if span_sec:
+        print(f"Time span: {span_sec}s")
 
-print("Error Pattern Analysis:")
-for error in repeated_errors:
-    count = error_messages.count(error)
-    print(f"WARNING: REPEATED ERROR ({count}x): {error}")
-print()
+print("\nExtracted Metadata:")
+print(f"Users: {', '.join(users) if users else 'None'}")
+print(f"IPs: {', '.join(ips) if ips else 'None'}")
+print(f"Percentages: {', '.join(percentages) if percentages else 'None'}")
 
-print("Timeline Analysis:")
-print("ERROR Events:")
-for i in range(len(error_times)):
-    print(f"  {error_times[i]} - {error_messages[i]}")
-
-if len(error_times) > 1:
-    print(f"\nTime span: {total_interval} minutes")
-print()
-
-print("Metadata Extraction:")
-if len(users) > 0:
-    print(f"Users detected: {', '.join(users)}")
-if len(ips) > 0:
-    print(f"IP addresses: {', '.join(ips)}")
-print()
-
-print("Recommendations:")
-if len(repeated_errors) > 0:
-    print(f"1. Investigate repeated errors: {repeated_errors[0]}")
-if len(users) > 0:
-    print(f"2. Monitor user activity: {', '.join(users)}")
+print("\nInsights:")
+if burst_detected:
+    print("- ERROR burst detected (3+ errors within 30s)")
+if repeated_errors:
+    top_error = max(repeated_errors, key=repeated_errors.get)
+    print(f"- Investigate recurring error: {top_error}")
+if users:
+    print(f"- User activity observed: {', '.join(sorted(set(users)))}")

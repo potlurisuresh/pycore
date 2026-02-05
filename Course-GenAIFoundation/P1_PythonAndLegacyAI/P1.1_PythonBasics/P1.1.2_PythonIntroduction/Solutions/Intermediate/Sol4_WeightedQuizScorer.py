@@ -1,12 +1,5 @@
 """
-Solution: Intermediate Assignment 4 - Weighted Quiz Scorer
-
-This solution demonstrates:
-- List of dictionaries handling
-- Matching data structures by ID
-- Percentage calculations
-- Identifying weak areas
-- Conditional logic for categorization
+Solution: Intermediate Assignment 4 - Weighted Quiz Scorer (Concise)
 """
 
 # Input data
@@ -81,8 +74,3 @@ if weak_questions:
 else:
     print("  None - Great job!")
 
-# Alternative approach using zip()
-print("\n--- Alternative Using zip() ---")
-for q, a in zip(questions, user_answers):
-    pct = (a["points_earned"] / q["max_points"]) * 100
-    print("Q{}: {:.1f}%".format(q['id'], pct))

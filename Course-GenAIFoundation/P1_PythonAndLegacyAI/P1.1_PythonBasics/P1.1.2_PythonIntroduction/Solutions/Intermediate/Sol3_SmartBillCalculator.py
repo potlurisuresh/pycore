@@ -1,12 +1,5 @@
 """
-Solution: Intermediate Assignment 3 - Smart Bill Calculator
-
-This solution demonstrates:
-- Ordered calculation sequence
-- Conditional logic for optional charges
-- Percentage and arithmetic operations
-- Currency formatting
-- Division for bill splitting
+Solution: Intermediate Assignment 3 - Smart Bill Calculator (Concise)
 """
 
 # Input data
@@ -51,8 +44,3 @@ per_person = final_total / split_count
 
 print("\nPer Person (split {}): ${:.2f}".format(split_count, per_person))
 
-# Alternative approach: Breakdown as percentage
-print("\n--- Breakdown Summary ---")
-print("Original Subtotal: ${:.2f} (100%)".format(subtotal))
-print("After Discount: ${:.2f} ({:.1f}%)".format(subtotal_after_discount, (subtotal_after_discount/subtotal)*100))
-print("With Tax, Service, Tip: ${:.2f} ({:.1f}%)".format(final_total, (final_total/subtotal)*100))

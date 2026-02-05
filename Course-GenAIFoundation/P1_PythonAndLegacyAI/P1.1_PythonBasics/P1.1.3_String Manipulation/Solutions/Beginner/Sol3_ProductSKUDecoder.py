@@ -3,10 +3,10 @@ Beginner Solution 3: Product SKU Decoder
 """
 
 # Input data
-sku_code = "ELC-2024-M-BLU-001"
+sku = "ELC-2024-M-BLU-001"
 
 # Parse SKU by splitting on dashes
-parts = sku_code.split("-")
+parts = sku.split("-")
 
 # Extract components
 category = parts[0]
@@ -40,7 +40,7 @@ else:
 # Print formatted output
 print("Product SKU Decoder")
 print("=" * 20)
-print(f"SKU: {sku_code}")
+print(f"SKU: {sku}")
 print(f"Category: {category_name} ({category})")
 print(f"Year: {year}")
 print(f"Size: {size}")

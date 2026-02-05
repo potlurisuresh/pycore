@@ -3,10 +3,10 @@ Beginner Solution 5: File Path Processor
 """
 
 # Input data
-file_path = "/home/user/documents/report.pdf"
+filepath = "/home/user/documents/report.pdf"
 
 # Detect OS type
-if "\\" in file_path:
+if "\\" in filepath:
     os_type = "Windows"
     separator = "\\"
 else:
@@ -14,7 +14,7 @@ else:
     separator = "/"
 
 # Split path to get filename
-parts = file_path.split(separator)
+parts = filepath.split(separator)
 filename = parts[-1]  # Last part is the filename
 
 # Extract name and extension
@@ -25,7 +25,7 @@ extension = name_parts[1]
 # Print formatted output
 print("File Path Processor")
 print("=" * 20)
-print(f"Full Path: {file_path}")
+print(f"Full Path: {filepath}")
 print(f"OS Type: {os_type}")
 print(f"Filename: {filename}")
 print(f"Name: {name}")

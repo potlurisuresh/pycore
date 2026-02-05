@@ -3,10 +3,10 @@ Intermediate Solution 5: File Path Processor
 """
 
 # Input data
-path_list = "/home/user/docs/report.pdf, C:\\Users\\file.txt, /var/log/system.log"
+file_list = "/home/user/docs/report.pdf, C:\\Users\\file.txt, /var/log/system.log"
 
 # Parse paths
-paths = path_list.split(", ")
+paths = file_list.split(", ")
 
 # Initialize lists
 valid_paths = []
