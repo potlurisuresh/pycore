@@ -1,0 +1,4 @@
+42
+Hello world
+100
+not_a_number
