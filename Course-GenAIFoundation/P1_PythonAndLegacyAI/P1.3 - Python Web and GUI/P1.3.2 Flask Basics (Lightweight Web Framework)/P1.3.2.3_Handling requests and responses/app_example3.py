@@ -7,12 +7,6 @@ app = Flask(__name__)
 def success():
     return "Success!", 200
 
-# 201 Created (after creating resource)
-@app.route('/create', methods=['POST'])
-def create():
-    new_item = {"id": 1, "name": "Item"}
-    return jsonify(new_item), 201
-
 # 400 Bad Request (client error)
 @app.route('/bad')
 def bad_request():

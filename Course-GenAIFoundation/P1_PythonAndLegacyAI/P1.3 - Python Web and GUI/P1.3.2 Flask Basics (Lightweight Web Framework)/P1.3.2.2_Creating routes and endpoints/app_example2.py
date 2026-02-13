@@ -21,11 +21,18 @@ def get_post(post_id):
 def profile(username, user_id):
     return f"Profile: {username} (ID: {user_id})"
 
+# Float parameter
+@app.route('/temp/<float:celsius>')
+def convert_temp(celsius):
+    fahrenheit = (celsius * 9/5) + 32
+    return f"{celsius}°C = {fahrenheit}°F"
+
 if __name__ == '__main__':
     print("Starting Flask app with route parameters...")
     print("Open http://localhost:5000 in your browser")
     print("Try:")
-    print("  http://localhost:5000/user/maya")
+    print("  http://localhost:5000/user/maya")          
     print("  http://localhost:5000/post/42")
     print("  http://localhost:5000/profile/john/123")
+    print("  http://localhost:5000/temp/25")
     app.run(debug=True)

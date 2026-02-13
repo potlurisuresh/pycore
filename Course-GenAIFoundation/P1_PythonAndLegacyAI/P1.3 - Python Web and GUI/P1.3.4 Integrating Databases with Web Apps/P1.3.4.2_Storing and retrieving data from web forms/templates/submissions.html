@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submissions</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f7f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h1 {
+            color: #2d6cdf;
+            margin-top: 40px;
+        }
+        ul {
+            background: #fff;
+            padding: 24px 32px;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(44, 62, 80, 0.08);
+            margin-top: 24px;
+            min-width: 320px;
+            list-style: none;
+        }
+        li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e3e8ee;
+            color: #333;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        a {
+            display: inline-block;
+            margin-top: 24px;
+            color: #fff;
+            background: #2d6cdf;
+            padding: 10px 22px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1em;
+            transition: background 0.2s;
+        }
+        a:hover {
+            background: #174a8b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Submitted Data</h1>
+    <ul>
+        {% for row in submissions %}
+            <li>{{ row[1] }} - {{ row[2] }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/">Back to form</a>
+</body>
+</html>

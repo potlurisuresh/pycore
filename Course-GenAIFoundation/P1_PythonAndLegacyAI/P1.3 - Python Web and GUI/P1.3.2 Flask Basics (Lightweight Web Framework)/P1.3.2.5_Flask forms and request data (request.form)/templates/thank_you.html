@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Thank You</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/thank_you.css') }}">
+</head>
+<body>
+    <div class="thank-you-container">
+        <h2>Thank You, {{ name }}!</h2>
+        <p>We appreciate your feedback. Your message has been received and will be reviewed.</p>
+        <a href="/feedback">Submit another feedback</a>
+    </div>
+</body>
+</html>

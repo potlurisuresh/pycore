@@ -2,28 +2,29 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
-# GET request (default)
-@app.route('/data', methods=['GET'])
-def get_data():
-    return "Getting data..."
+@app.route('/')
+def home():
+    return "Home Page"
 
-# POST request
-@app.route('/submit', methods=['POST'])
-def submit_form():
-    return "Form submitted!"
+# Handle 404 - Page Not Found
+@app.errorhandler(404)
+def page_not_found(error):
+    return """
+    Page not found! (404)
+    The page you are looking for does not exist.
+    """
 
-# Handle both GET and POST
-@app.route('/form', methods=['GET', 'POST'])
-def handle_form():
-    if request.method == 'POST':
-        return "Processing form data..."
-    else:
-        return "Display form"
+# Handle 500 - Server Error
+@app.errorhandler(500)
+def server_error(error):
+    return """
+    Server error! (500)
+    Something went wrong on our end.
+    """
+
 
 if __name__ == '__main__':
-    print("Starting Flask app with HTTP methods...")
+    print("Starting Flask app with error handlers...")
     print("Open http://localhost:5000 in your browser")
-    print("Try:")
-    print("  http://localhost:5000/data (GET)")
-    print("  http://localhost:5000/form (GET)")
+    print("Try visiting a non-existent URL like: http://localhost:5000/invalid")
     app.run(debug=True)

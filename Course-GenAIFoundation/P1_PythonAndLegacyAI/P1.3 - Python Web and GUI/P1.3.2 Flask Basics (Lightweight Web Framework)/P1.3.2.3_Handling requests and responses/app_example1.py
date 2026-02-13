@@ -13,13 +13,6 @@ def search():
     query = request.args.get('q', 'default')
     return f"You searched for: {query}"
 
-# Access form data (POST)
-@app.route('/login', methods=['POST'])
-def login():
-    username = request.form.get('username')
-    password = request.form.get('password')
-    return f"Login: {username}"
-
 # Access headers
 @app.route('/headers')
 def show_headers():
@@ -28,5 +21,7 @@ def show_headers():
 
 if __name__ == '__main__':
     print("Starting Flask app for request handling...")
+    print("Open http://localhost:5000/info to see request method and path")
     print("Try: http://localhost:5000/search?q=python")
+    print("Try: http://localhost:5000/headers to see your browser info")
     app.run(debug=True)
